@@ -41,7 +41,7 @@ class Login extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(left: 10.0),
                   child: Text(
                     "Phone Number",
@@ -50,7 +50,7 @@ class Login extends StatelessWidget {
                 ),
                 TextField(
                   controller: phoneNumberController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
                       hintText: "Enter Phone Number",
@@ -58,13 +58,10 @@ class Login extends StatelessWidget {
                       focusedBorder: borders),
                   keyboardType: TextInputType.phone,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
-                SizedBox(
-                  height: 20,
-                ),
-                Padding(
+                const Padding(
                   padding: EdgeInsets.only(left: 10.0),
                   child: Text(
                     "Password",
@@ -73,7 +70,7 @@ class Login extends StatelessWidget {
                 ),
                 TextField(
                   controller: passwordController,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                       fillColor: Colors.white,
                       filled: true,
                       hintText: "Enter Password",
@@ -83,28 +80,38 @@ class Login extends StatelessWidget {
                 ),
               ],
             ),
-            ElevatedButton(
-              onPressed: _login,
-              style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.white),
-                  fixedSize:
-                      const WidgetStatePropertyAll(Size(double.maxFinite, 45))),
-              child: const Text(
-                "Login",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            Column(
               children: [
-                GestureDetector(
+                ElevatedButton(
+                  onPressed: _login,
+                  style: ButtonStyle(
+                      elevation: WidgetStatePropertyAll(12),
+                      shadowColor: const WidgetStatePropertyAll(Colors.white),
+                      backgroundColor: WidgetStateProperty.all(Colors.white),
+                      fixedSize: const WidgetStatePropertyAll(
+                          Size(double.maxFinite, 45))),
                   child: const Text(
-                    "Don't have Account? Register",
-                    style: TextStyle(color: Colors.white60, fontSize: 15),
+                    "Login",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700),
                   ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, 'register'),
+                      child: const Text(
+                        "Don't have Account? Register",
+                        style: TextStyle(color: Colors.white60, fontSize: 15),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             )

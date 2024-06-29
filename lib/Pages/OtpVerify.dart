@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Otpverify extends StatelessWidget {
-  const Otpverify({super.key});
+  Otpverify({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,28 +49,38 @@ class Otpverify extends StatelessWidget {
                 ),
               ],
             ),
-            ElevatedButton(
-              onPressed: _login,
-              style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.white),
-                  fixedSize:
-                      const WidgetStatePropertyAll(Size(double.maxFinite, 45))),
-              child: const Text(
-                "Register",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            Column(
               children: [
-                GestureDetector(
+                ElevatedButton(
+                  onPressed: _login,
+                  style: ButtonStyle(
+                      elevation: WidgetStatePropertyAll(12),
+                      shadowColor: const WidgetStatePropertyAll(Colors.white),
+                      backgroundColor: WidgetStateProperty.all(Colors.white),
+                      fixedSize: const WidgetStatePropertyAll(
+                          Size(double.maxFinite, 45))),
                   child: const Text(
-                    "Don't receive OTP? Register",
-                    style: TextStyle(color: Colors.white60, fontSize: 15),
+                    "Register",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700),
                   ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, 'register'),
+                      child: const Text(
+                        "Don't receive OTP? Register",
+                        style: TextStyle(color: Colors.white60, fontSize: 15),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             )

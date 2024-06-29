@@ -101,28 +101,38 @@ class Register extends StatelessWidget {
                 ),
               ],
             ),
-            ElevatedButton(
-              onPressed: _register,
-              style: ButtonStyle(
-                  backgroundColor: WidgetStateProperty.all(Colors.white),
-                  fixedSize:
-                      const WidgetStatePropertyAll(Size(double.maxFinite, 45))),
-              child: const Text(
-                "Send OTP",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+            Column(
               children: [
-                GestureDetector(
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "otpverify");
+                  },
+                  style: ButtonStyle(
+                      backgroundColor: WidgetStateProperty.all(Colors.white),
+                      fixedSize: const WidgetStatePropertyAll(
+                          Size(double.maxFinite, 45))),
                   child: const Text(
-                    "Already Have Account? Login",
-                    style: TextStyle(color: Colors.white60, fontSize: 15),
+                    "Send OTP",
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700),
                   ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.pushNamed(context, 'login'),
+                      child: const Text(
+                        "Already Have Account? Login",
+                        style: TextStyle(color: Colors.white60, fontSize: 15),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             )

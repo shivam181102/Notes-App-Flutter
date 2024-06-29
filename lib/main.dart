@@ -15,7 +15,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Otpverify(),
+      home: Login(),
+      routes: {
+        'otpverify': (context) => Otpverify(),
+        'login': (context) => Login(),
+        'register': (context) => Register()
+      },
     );
   }
 }
