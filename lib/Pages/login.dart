@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:notes/global/common/colorpalet.dart';
@@ -173,11 +172,11 @@ class _LoginState extends State<Login> {
                     height: 10,
                   ),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       setState(() {
                         spiner = true;
                       });
-                      FirebaseAuthGoogle.signInWithGoogle(context);
+                      await FirebaseAuthGoogle.signInWithGoogle(context);
                       setState(() {
                         spiner = false;
                       });

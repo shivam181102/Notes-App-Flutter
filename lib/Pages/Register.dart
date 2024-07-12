@@ -18,6 +18,7 @@ class _RegisterState extends State<Register> {
   final FirebaseAuthServices _auth = FirebaseAuthServices();
   bool visible = true;
   bool loader = false;
+  bool spiner = false;
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController nameController = TextEditingController();
@@ -199,8 +200,15 @@ class _RegisterState extends State<Register> {
                     height: 10,
                   ),
                   ElevatedButton(
-                    onPressed: () =>
-                        {FirebaseAuthGoogle.signInWithGoogle(context)},
+                    onPressed: () async {
+                      setState(() {
+                        spiner = true;
+                      });
+                      await FirebaseAuthGoogle.signInWithGoogle(context);
+                      setState(() {
+                        spiner = false;
+                      });
+                    },
                     style: ButtonStyle(
                         // elevation: const WidgetStatePropertyAll(10),
                         shadowColor: const WidgetStatePropertyAll(
@@ -208,7 +216,7 @@ class _RegisterState extends State<Register> {
                         backgroundColor: WidgetStateProperty.all(mid()),
                         fixedSize: const WidgetStatePropertyAll(
                             Size(double.maxFinite, 45))),
-                    child: loader
+                    child: spiner
                         ? CircularProgressIndicator(
                             color: light(),
                           )
