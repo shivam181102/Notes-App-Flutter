@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:notes/global/common/ParseData.dart';
 
 import 'package:notes/global/common/colorpalet.dart';
 
@@ -12,9 +13,10 @@ class Editnote extends StatefulWidget {
 }
 
 class _EditnoteState extends State<Editnote> {
-  Map<String, dynamic>? profile;
+  NoteData? profile;
   late TextEditingController _titleControl;
   late TextEditingController _noteControl;
+  JsonData datainit = JsonData();
 
   @override
   void initState() {
@@ -26,12 +28,10 @@ class _EditnoteState extends State<Editnote> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    profile =
-        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    profile = ModalRoute.of(context)?.settings.arguments as NoteData?;
     if (profile != null) {
-      print(profile!['id']);
-      _titleControl.text = profile!['name'] ?? '';
-      _noteControl.text = "${profile!['address']} ${profile!['age']}" ?? '';
+      _titleControl.text = profile!.title ?? '';
+      _noteControl.text = "${profile!.body}" ?? '';
     }
   }
 
@@ -52,7 +52,9 @@ class _EditnoteState extends State<Editnote> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            print(_noteControl.text);
+            String Ttitle = _titleControl.text;
+            String Tbody = _noteControl.text;
+            datainit.updatePerson(id: profile?.id, title: Ttitle, body: Tbody);
             Navigator.pushNamedAndRemoveUntil(
                 context, "home", (Route<dynamic> route) => false);
           },

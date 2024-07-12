@@ -27,6 +27,7 @@ class _NotecardsState extends State<Notecards> {
 
   Future<void> loadJson() async {
     List<dynamic>? data = await datainit.getAllData();
+
     setState(() {
       _data = data;
     });
@@ -64,7 +65,7 @@ class _NotecardsState extends State<Notecards> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          profile['name'],
+                          profile.title,
                           style: TextStyle(
                               color: light(),
                               fontWeight: FontWeight.w700,
@@ -72,19 +73,9 @@ class _NotecardsState extends State<Notecards> {
                         ),
                         SizedBox(height: 8),
                         Text(
-                          profile['phone'].toString(),
+                          profile.body,
                           style: TextStyle(color: light()),
                         ),
-                        SizedBox(height: 8),
-                        Text(
-                          profile['address'],
-                          style: TextStyle(color: light()),
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          "Age: ${profile['age'].toString()}",
-                          style: TextStyle(color: light()),
-                        )
                       ],
                     ),
                   ),
