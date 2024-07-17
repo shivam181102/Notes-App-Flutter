@@ -36,7 +36,7 @@ class _EditnoteState extends State<Editnote> {
     profile = ModalRoute.of(context)?.settings.arguments as Map?;
     if (profile != null) {
       _titleControl.text = profile!["title"] ?? '';
-      _noteControl.text = "${profile!["body"]}" ?? '';
+      _noteControl.text = profile!["body"] ?? '';
       // backg = profile!.notecol;
     }
   }

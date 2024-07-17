@@ -1,10 +1,9 @@
-import 'dart:convert';
-import 'dart:math';
+// ignore_for_file: unnecessary_null_comparison, must_be_immutable
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:notes/firebase%20store/firestore.dart';
 import 'package:notes/global/common/ParseData.dart';

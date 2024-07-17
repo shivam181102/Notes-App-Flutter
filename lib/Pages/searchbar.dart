@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:notes/global/common/colorpalet.dart';
 
+// ignore: must_be_immutable
 class SearchBarComp extends StatefulWidget {
   bool viewStyle;
   final viewStyleChange;
