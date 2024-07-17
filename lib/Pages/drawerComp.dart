@@ -90,7 +90,6 @@ class _DrawercompState extends State<Drawercomp> {
       await _googleSignIn.disconnect();
       await _googleSignIn.signOut();
     } on Exception catch (e) {
-      showToast(message: e.toString());
       print(e.toString());
     }
   }

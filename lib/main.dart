@@ -43,14 +43,14 @@ class _MyAppState extends State<MyApp> {
           textSelectionTheme: TextSelectionThemeData(
               selectionColor: mid2(), selectionHandleColor: mid2())),
       home: SplashScreen(
-        child: current != null ? Homecomp() : Login(),
+        child: current != null ? const Homecomp() : Login(),
       ),
       routes: {
         'otpverify': (context) => Otpverify(),
         'login': (context) => Login(),
         'register': (context) => Register(),
-        'home': (context) => Homecomp(),
-        'editnote': (context) => Editnote(),
+        'home': (context) => const Homecomp(),
+        'editnote': (context) => const Editnote(),
       },
     );
   }

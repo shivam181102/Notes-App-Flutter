@@ -2,12 +2,20 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/services.dart';
+import 'package:notes/global/common/colorpalet.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NoteData {
   int id;
-  String title;
-  String body;
-  NoteData({this.title = " ", this.body = " ", required this.id});
+  String? title;
+  String? body;
+  Color notecol;
+  NoteData(
+      {this.title = " ",
+      this.body = " ",
+      required this.id,
+      this.notecol = const Color.fromARGB(255, 31, 26, 22)});
   Map<String, dynamic> toJson() {
     return {"title": title, "body": body, "id": id};
   }
@@ -15,6 +23,7 @@ class NoteData {
 
 class JsonData {
   List<dynamic>? _data;
+  List<dynamic>? data;
   // late File _file;
   static final JsonData _instance = JsonData._internal();
   factory JsonData() {
@@ -22,12 +31,22 @@ class JsonData {
   }
   JsonData._internal() {
     initData();
+    print("");
   }
   Future initData() async {
-    final response = await rootBundle.loadString('lib/global/common/data.json');
-    final data = await json.decode(response);
+    final prefs = await SharedPreferences.getInstance();
+    String? jsonString = prefs.getString('notesData');
 
-    _data = data
+    if (jsonString == null) {
+      jsonString = await rootBundle.loadString('lib/global/common/data.json');
+      print(
+          "Helo..............................................................");
+      await prefs.setString('notesData', jsonString);
+    }
+
+    data = await json.decode(jsonString);
+
+    _data = data!
         .map((res) =>
             NoteData(title: res["title"], body: res["body"], id: res["id"]))
         .toList();
@@ -38,17 +57,35 @@ class JsonData {
       await initData();
       print("init.................................");
     }
+    print(_data);
     return _data;
   }
 
-  void updatePerson({int? id, String title = '', String body = ''}) {
+  void removeNote({int? id}) {
+    if (id != null) {
+      final personIndex = _data!.indexWhere((person) => person.id == id);
+      _data!.removeAt(personIndex);
+    }
+  }
+
+  void updateNote({int? id, String? title, String? body}) async {
     final personIndex = _data!.indexWhere((person) => person.id == id);
+    print(id);
     if (personIndex != -1) {
       if (title != null) _data![personIndex].title = title;
       if (body != null) _data![personIndex].body = body;
     } else {
-      int len = _data!.length;
-      NoteData(title: title, body: body, id: len);
+      int len = _data!.length + 1;
+      if (title != "" || body != '') {
+        print(".........................................................");
+        NoteData f1 = NoteData(title: title, body: body, id: len);
+        _data!.add(f1);
+      }
     }
+    Iterable temp = _data!.map((res) => res.toJson());
+    List<dynamic> templist = temp.toList();
+    String data2 = json.encode(templist);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('notesData', data2);
   }
 }
