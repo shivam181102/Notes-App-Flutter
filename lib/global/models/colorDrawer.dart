@@ -16,8 +16,7 @@ class ColorClass {
 class Colordrawer {
   final updateFun;
   List<ColorClass> list = [];
-  Colordrawer({required this.updateFun});
-  List<ColorClass> getColor() {
+  Colordrawer({required this.updateFun}) {
     list.add(ColorClass(clo: dark(), selected: true, id: 1));
     list.add(ColorClass(clo: Color.fromARGB(255, 118, 23, 45), id: 2));
     list.add(ColorClass(clo: Color.fromARGB(255, 105, 42, 24), id: 3));
@@ -25,6 +24,8 @@ class Colordrawer {
     list.add(ColorClass(clo: Color.fromARGB(255, 38, 77, 59), id: 5));
     list.add(ColorClass(clo: Color.fromARGB(255, 0, 195, 94), id: 6));
     list.add(ColorClass(clo: Color.fromARGB(255, 42, 78, 135), id: 7));
+  }
+  List<ColorClass> getColor() {
     return list;
   }
 

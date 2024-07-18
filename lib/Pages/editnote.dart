@@ -43,10 +43,8 @@ class _EditnoteState extends State<Editnote> {
 
   void colorchange(Color tempcol) {
     setState(() {
-      if (profile != null) {
-        backg = tempcol;
-        // profile!.notecol = tempcol;
-      }
+      backg = tempcol;
+      // profile!.notecol = tempcol;
     });
   }
 
@@ -143,60 +141,8 @@ class _EditnoteState extends State<Editnote> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () => showBottomDrawer(
-                        context,
-                        150,
-                        Container(
-                            padding: EdgeInsets.all(20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Colour",
-                                  style:
-                                      TextStyle(color: light(), fontSize: 25),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Container(
-                                  height: 50,
-                                  child: ListView.separated(
-                                      scrollDirection: Axis.horizontal,
-                                      separatorBuilder: (context, index) =>
-                                          SizedBox(
-                                            width: 15,
-                                          ),
-                                      itemCount: colorlist.length,
-                                      itemBuilder: (context, index) {
-                                        final res = colorlist[index];
-                                        return GestureDetector(
-                                          onTap: () => colordrawer
-                                              .updateSelected(res.id),
-                                          child: Container(
-                                              height: 50,
-                                              width: 50,
-                                              decoration: BoxDecoration(
-                                                  color: res.clo,
-                                                  border: res.selected
-                                                      ? Border.all(
-                                                          color: light(),
-                                                          width: 3)
-                                                      : null,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          50)),
-                                              child: res.selected
-                                                  ? Icon(
-                                                      Icons.check,
-                                                      color: light(),
-                                                    )
-                                                  : null),
-                                        );
-                                      }),
-                                )
-                              ],
-                            ))),
+                    onPressed: () =>
+                        colorDrawer(context, colorlist, colordrawer),
                     icon: Icon(
                       Icons.color_lens_outlined,
                       color: light(),
@@ -252,11 +198,62 @@ class _EditnoteState extends State<Editnote> {
     );
   }
 
+  void colorDrawer(BuildContext context, List<ColorClass> colorlist,
+      Colordrawer colordrawer) {
+    return showBottomDrawer(
+        context,
+        150,
+        Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Colour",
+                  style: TextStyle(color: light(), fontSize: 25),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                  height: 50,
+                  child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      separatorBuilder: (context, index) => SizedBox(
+                            width: 15,
+                          ),
+                      itemCount: colorlist.length,
+                      itemBuilder: (context, index) {
+                        final res = colorlist[index];
+                        return GestureDetector(
+                          onTap: () => colordrawer.updateSelected(res.id),
+                          child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  color: res.clo,
+                                  border: res.selected
+                                      ? Border.all(color: light(), width: 3)
+                                      : null,
+                                  borderRadius: BorderRadius.circular(50)),
+                              child: res.selected
+                                  ? Icon(
+                                      Icons.check,
+                                      color: light(),
+                                    )
+                                  : null),
+                        );
+                      }),
+                )
+              ],
+            )));
+  }
+
   void addBox(BuildContext context) {
     return showBottomDrawer(
       context,
       280,
-      Column(
+      ListView(
         children: [
           ListTile(
             leading: Icon(

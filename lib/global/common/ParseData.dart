@@ -29,7 +29,7 @@ class JsonData {
   }
   JsonData._internal() {
     initData();
-    print("");
+    // print("");
   }
   Future initData() async {
     final prefs = await SharedPreferences.getInstance();
@@ -37,8 +37,8 @@ class JsonData {
 
     if (jsonString == null) {
       jsonString = await rootBundle.loadString('lib/global/common/data.json');
-      print(
-          "Helo..............................................................");
+      // print(
+      //     "Helo..............................................................");
       await prefs.setString('notesData', jsonString);
     }
 
@@ -53,9 +53,9 @@ class JsonData {
   Future getAllData() async {
     if (_data == null) {
       await initData();
-      print("init.................................");
+      // print("init.................................");
     }
-    print(_data);
+    // print(_data);
     return _data;
   }
 
@@ -68,14 +68,14 @@ class JsonData {
 
   void updateNote({int? id, String? title, String? body}) async {
     final personIndex = _data!.indexWhere((person) => person.id == id);
-    print(id);
+    // print(id);
     if (personIndex != -1) {
       if (title != null) _data![personIndex].title = title;
       if (body != null) _data![personIndex].body = body;
     } else {
       int len = _data!.length + 1;
       if (title != "" || body != '') {
-        print(".........................................................");
+        // print("..................................................................................");
         NoteData f1 = NoteData(title: title, body: body, id: len);
         _data!.add(f1);
       }

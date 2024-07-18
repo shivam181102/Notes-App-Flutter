@@ -64,7 +64,9 @@ class _NotecardsState extends State<Notecards> {
               ),
             );
           }
-          if (snapshot != null && snapshot.data != null) {
+          if (snapshot.hasData &&
+              snapshot.data != null &&
+              !snapshot.data!.docs.isEmpty) {
             return gridview(snapshot);
           }
           return Text("KNHVJHVKJBKJBJKBJKBK");
@@ -80,7 +82,7 @@ class _NotecardsState extends State<Notecards> {
         gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: widget.viewStyle ? 2 : 1),
         itemBuilder: (context, index) {
-          final profile = _data?[index];
+          // final profile = _data![index];
           return GestureDetector(
             onTap: () {
               Navigator.pushNamed(context, 'editnote', arguments: {
@@ -95,7 +97,7 @@ class _NotecardsState extends State<Notecards> {
               child: Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: profile.notecol,
+                  color: dark(),
                   border: Border.all(color: mid2(), width: 1),
                   borderRadius: BorderRadius.circular(10),
                 ),
