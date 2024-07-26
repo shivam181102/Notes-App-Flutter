@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:notes/global/common/colorpalet.dart';
 
@@ -13,11 +15,11 @@ class ColorClass {
   });
 }
 
-class Colordrawer {
+class Colordrawermodel {
   final updateFun;
   List<ColorClass> list = [];
-  Colordrawer({required this.updateFun}) {
-    list.add(ColorClass(clo: dark(), selected: true, id: 1));
+  Colordrawermodel({required this.updateFun}) {
+    list.add(ColorClass(clo: dark, selected: true, id: 1));
     list.add(ColorClass(clo: Color.fromARGB(255, 118, 23, 45), id: 2));
     list.add(ColorClass(clo: Color.fromARGB(255, 105, 42, 24), id: 3));
     list.add(ColorClass(clo: Color.fromARGB(255, 122, 74, 3), id: 4));
@@ -34,6 +36,7 @@ class Colordrawer {
       element.selected = false;
       if (element.id == id) {
         element.selected = true;
+
         updateFun(element.clo);
       }
     }

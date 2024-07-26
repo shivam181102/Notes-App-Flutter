@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:notes/Database/SQFlite/noteslocaldatamanager.dart';
 import 'package:notes/Pages/drawerComp.dart';
 import 'package:notes/Pages/notecards.dart';
 import 'package:notes/Pages/searchbar.dart';
@@ -15,6 +16,7 @@ class Homecomp extends StatefulWidget {
 
 class _HomecompState extends State<Homecomp> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  NotesLocalDataManager _notesLocalDataManager = NotesLocalDataManager();
   bool viewStyle = true;
   int selectedIndex = 1;
   void setIndex(int num) {
@@ -33,18 +35,41 @@ class _HomecompState extends State<Homecomp> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: dark(),
+      endDrawerEnableOpenDragGesture: true,
+      backgroundColor: dark,
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SearchBarComp(
             scaffoldKey: _scaffoldKey,
             viewStyle: viewStyle,
             viewStyleChange: viewstyleChange,
           ),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text(
+              "Pinned",
+              style: TextStyle(color: light),
+            ),
+          ),
           Expanded(
               child: Notecards(
             viewStyle: viewStyle,
-          ))
+            dataFunction: _notesLocalDataManager.getPinData(),
+          )),
+          Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: Text(
+              "Other",
+              style: TextStyle(color: light),
+            ),
+          ),
+          Expanded(
+              flex: 2,
+              child: Notecards(
+                viewStyle: viewStyle,
+                dataFunction: _notesLocalDataManager.getData(),
+              ))
         ],
       ),
       drawer: Drawercomp(
@@ -52,7 +77,7 @@ class _HomecompState extends State<Homecomp> {
         setIndex: setIndex,
       ),
       bottomNavigationBar: BottomAppBar(
-        color: mid(),
+        color: mid,
         shape: const AutomaticNotchedShape(
           ContinuousRectangleBorder(),
           ContinuousRectangleBorder(
@@ -67,25 +92,25 @@ class _HomecompState extends State<Homecomp> {
             IconButton(
                 icon: Icon(
                   Icons.check_box_outlined,
-                  color: light(),
+                  color: light,
                 ),
                 onPressed: () {}),
             IconButton(
                 icon: Icon(
                   Icons.brush,
-                  color: light(),
+                  color: light,
                 ),
                 onPressed: () {}),
             IconButton(
                 icon: Icon(
                   Icons.mic_none,
-                  color: light(),
+                  color: light,
                 ),
                 onPressed: () {}),
             IconButton(
                 icon: Icon(
                   Icons.image_outlined,
-                  color: light(),
+                  color: light,
                 ),
                 onPressed: () {}),
           ],
@@ -94,7 +119,7 @@ class _HomecompState extends State<Homecomp> {
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(bottom: 0.0), // Adjust the gap here
         child: FloatingActionButton(
-          backgroundColor: mid(),
+          backgroundColor: mid,
           tooltip: 'Add New Note',
           onPressed: () {
             Navigator.pushNamed(context, 'editnote');
@@ -102,7 +127,7 @@ class _HomecompState extends State<Homecomp> {
           child: Icon(
             Icons.add,
             size: 50,
-            color: light2(),
+            color: light2,
             weight: 40,
           ),
         ),

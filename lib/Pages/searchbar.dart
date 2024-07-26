@@ -35,10 +35,10 @@ class _SearchBarCompState extends State<SearchBarComp> {
             child: TextField(
               decoration: InputDecoration(
                   filled: true,
-                  fillColor: mid(),
+                  fillColor: mid,
                   contentPadding: const EdgeInsets.all(0),
                   hintText: "Search Your Notes",
-                  hintStyle: TextStyle(color: light()),
+                  hintStyle: TextStyle(color: light),
                   prefixIcon: Padding(
                     padding: const EdgeInsets.all(15.0),
                     child: GestureDetector(
@@ -50,7 +50,7 @@ class _SearchBarCompState extends State<SearchBarComp> {
                         height: 20,
                         child: Icon(
                           Icons.menu,
-                          color: light(),
+                          color: light,
                         ),
                       ),
                     ),
@@ -72,7 +72,7 @@ class _SearchBarCompState extends State<SearchBarComp> {
                                     ? Icons.grid_view
                                     : Icons.table_rows,
                                 size: 25,
-                                color: light(),
+                                color: light,
                               ),
                             ),
                           ),
@@ -85,7 +85,7 @@ class _SearchBarCompState extends State<SearchBarComp> {
                               icon: Icon(
                                 Icons.account_circle,
                                 size: 25,
-                                color: light(),
+                                color: light,
                               ),
                             ),
                           ),

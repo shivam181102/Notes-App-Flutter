@@ -24,7 +24,7 @@ class _DrawercompState extends State<Drawercomp> {
   Widget build(BuildContext context) {
     print(widget.selectedIndex);
     return Drawer(
-      backgroundColor: mid(),
+      backgroundColor: mid,
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -61,14 +61,14 @@ class _DrawercompState extends State<Drawercomp> {
     bool isSelected = index == widget.selectedIndex;
     return ListTile(
       selected: isSelected,
-      selectedTileColor: mid2(),
+      selectedTileColor: mid2,
       leading: Icon(
         icon,
-        color: isSelected ? light2() : light(),
+        color: isSelected ? light2 : light,
       ),
       title: Text(
         title,
-        style: TextStyle(color: isSelected ? light2() : light()),
+        style: TextStyle(color: isSelected ? light2 : light),
       ),
       onTap: () async {
         widget.setIndex(index);

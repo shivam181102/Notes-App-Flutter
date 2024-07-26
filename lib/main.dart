@@ -41,7 +41,7 @@ class _MyAppState extends State<MyApp> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           textSelectionTheme: TextSelectionThemeData(
-              selectionColor: mid2(), selectionHandleColor: mid2())),
+              selectionColor: mid2, selectionHandleColor: mid2)),
       home: SplashScreen(
         child: current != null ? const Homecomp() : Login(),
       ),

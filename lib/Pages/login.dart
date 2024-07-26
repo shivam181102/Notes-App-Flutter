@@ -44,7 +44,7 @@ class _LoginState extends State<Login> {
             BorderSide(width: 10, color: Color.fromARGB(255, 47, 36, 30)),
         borderRadius: BorderRadius.all(Radius.circular(10)));
     return Scaffold(
-      backgroundColor: dark(),
+      backgroundColor: dark,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text(
@@ -56,7 +56,7 @@ class _LoginState extends State<Login> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: dark(),
+        backgroundColor: dark,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -76,7 +76,7 @@ class _LoginState extends State<Login> {
                     child: Text(
                       "Email Address",
                       style: TextStyle(
-                          color: light2(),
+                          color: light2,
                           fontSize: 20,
                           fontWeight: FontWeight.w600),
                     ),
@@ -93,13 +93,13 @@ class _LoginState extends State<Login> {
                     ]),
                     child: TextField(
                       controller: emailController,
-                      cursorColor: mid2(),
-                      style: TextStyle(color: light()),
+                      cursorColor: mid2,
+                      style: TextStyle(color: light),
                       decoration: InputDecoration(
-                          fillColor: mid(),
+                          fillColor: mid,
                           filled: true,
                           hintText: "Enter Email Address",
-                          hintStyle: TextStyle(color: light()),
+                          hintStyle: TextStyle(color: light),
                           enabledBorder: borders,
                           focusedBorder: borders),
                       keyboardType: TextInputType.emailAddress,
@@ -113,7 +113,7 @@ class _LoginState extends State<Login> {
                     child: Text(
                       "Password",
                       style: TextStyle(
-                          color: light2(),
+                          color: light2,
                           fontSize: 20,
                           fontWeight: FontWeight.w600),
                     ),
@@ -129,14 +129,14 @@ class _LoginState extends State<Login> {
                       ),
                     ]),
                     child: TextField(
-                      style: TextStyle(color: light()),
+                      style: TextStyle(color: light),
                       controller: passwordController,
-                      cursorColor: mid2(),
+                      cursorColor: mid2,
                       decoration: InputDecoration(
-                          fillColor: mid(),
+                          fillColor: mid,
                           filled: true,
                           hintText: "Enter Password",
-                          hintStyle: TextStyle(color: light()),
+                          hintStyle: TextStyle(color: light),
                           enabledBorder: borders,
                           focusedBorder: borders),
                       keyboardType: TextInputType.text,
@@ -155,17 +155,17 @@ class _LoginState extends State<Login> {
                         // elevation: const WidgetStatePropertyAll(10),
                         shadowColor: const WidgetStatePropertyAll(
                             Color.fromARGB(112, 255, 255, 255)),
-                        backgroundColor: WidgetStateProperty.all(mid()),
+                        backgroundColor: WidgetStateProperty.all(mid),
                         fixedSize: const WidgetStatePropertyAll(
                             Size(double.maxFinite, 45))),
                     child: loader
                         ? CircularProgressIndicator(
-                            color: light(),
+                            color: light,
                           )
                         : Text(
                             "Login",
                             style: TextStyle(
-                                color: light(),
+                                color: light,
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700),
                           ),
@@ -187,24 +187,24 @@ class _LoginState extends State<Login> {
                         // elevation: const WidgetStatePropertyAll(10),
                         shadowColor: const WidgetStatePropertyAll(
                             Color.fromARGB(112, 255, 255, 255)),
-                        backgroundColor: WidgetStateProperty.all(mid()),
+                        backgroundColor: WidgetStateProperty.all(mid),
                         fixedSize: const WidgetStatePropertyAll(
                             Size(double.maxFinite, 45))),
                     child: spiner
                         ? CircularProgressIndicator(
-                            color: light(),
+                            color: light,
                           )
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
                                 FontAwesomeIcons.google,
-                                color: light2(),
+                                color: light2,
                               ),
                               Text(
                                 "  SignIn with Google",
                                 style: TextStyle(
-                                    color: light2(),
+                                    color: light2,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700),
                               ),

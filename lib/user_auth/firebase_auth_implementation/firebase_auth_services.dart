@@ -31,7 +31,6 @@ class FirebaseAuthServices {
     try {
       UserCredential credential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      log("hello");
 
       return credential.user;
     } on FirebaseAuthException catch (e) {

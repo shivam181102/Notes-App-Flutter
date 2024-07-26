@@ -49,7 +49,7 @@ class _RegisterState extends State<Register> {
       ),
     ]);
     return Scaffold(
-      backgroundColor: dark(),
+      backgroundColor: dark,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Text(
@@ -61,7 +61,7 @@ class _RegisterState extends State<Register> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: dark(),
+        backgroundColor: dark,
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -81,7 +81,7 @@ class _RegisterState extends State<Register> {
                     child: Text(
                       "Email Address",
                       style: TextStyle(
-                          color: light2(),
+                          color: light2,
                           fontSize: 20,
                           fontWeight: FontWeight.w600),
                     ),
@@ -90,13 +90,13 @@ class _RegisterState extends State<Register> {
                     decoration: shadowStore,
                     child: TextField(
                       controller: emailController,
-                      cursorColor: mid2(),
-                      style: TextStyle(color: light()),
+                      cursorColor: mid2,
+                      style: TextStyle(color: light),
                       decoration: InputDecoration(
-                          fillColor: mid(),
+                          fillColor: mid,
                           filled: true,
                           hintText: "Enter email",
-                          hintStyle: TextStyle(color: light()),
+                          hintStyle: TextStyle(color: light),
                           enabledBorder: borders,
                           focusedBorder: borders),
                       keyboardType: TextInputType.emailAddress,
@@ -110,7 +110,7 @@ class _RegisterState extends State<Register> {
                     child: Text(
                       "Name",
                       style: TextStyle(
-                          color: light2(),
+                          color: light2,
                           fontSize: 20,
                           fontWeight: FontWeight.w600),
                     ),
@@ -119,13 +119,13 @@ class _RegisterState extends State<Register> {
                     decoration: shadowStore,
                     child: TextField(
                       controller: nameController,
-                      cursorColor: mid2(),
-                      style: TextStyle(color: light()),
+                      cursorColor: mid2,
+                      style: TextStyle(color: light),
                       decoration: InputDecoration(
-                          fillColor: mid(),
+                          fillColor: mid,
                           filled: true,
                           hintText: "Enter Name",
-                          hintStyle: TextStyle(color: light()),
+                          hintStyle: TextStyle(color: light),
                           enabledBorder: borders,
                           focusedBorder: borders),
                       keyboardType: TextInputType.text,
@@ -139,7 +139,7 @@ class _RegisterState extends State<Register> {
                     child: Text(
                       "Password",
                       style: TextStyle(
-                          color: light2(),
+                          color: light2,
                           fontSize: 20,
                           fontWeight: FontWeight.w600),
                     ),
@@ -149,13 +149,13 @@ class _RegisterState extends State<Register> {
                     child: TextField(
                       obscureText: visible,
                       controller: passwordController,
-                      cursorColor: mid2(),
-                      style: TextStyle(color: light()),
+                      cursorColor: mid2,
+                      style: TextStyle(color: light),
                       decoration: InputDecoration(
-                          fillColor: mid(),
+                          fillColor: mid,
                           filled: true,
                           hintText: "Enter Password",
-                          hintStyle: TextStyle(color: light()),
+                          hintStyle: TextStyle(color: light),
                           enabledBorder: borders,
                           focusedBorder: borders,
                           suffixIcon: GestureDetector(
@@ -183,7 +183,7 @@ class _RegisterState extends State<Register> {
                       _signUp();
                     },
                     style: ButtonStyle(
-                        backgroundColor: WidgetStateProperty.all(mid()),
+                        backgroundColor: WidgetStateProperty.all(mid),
                         shadowColor: const WidgetStatePropertyAll(
                             Color.fromARGB(112, 255, 255, 255)),
                         fixedSize: const WidgetStatePropertyAll(
@@ -191,7 +191,7 @@ class _RegisterState extends State<Register> {
                     child: Text(
                       "Register",
                       style: TextStyle(
-                          color: light(),
+                          color: light,
                           fontSize: 20,
                           fontWeight: FontWeight.w700),
                     ),
@@ -213,24 +213,24 @@ class _RegisterState extends State<Register> {
                         // elevation: const WidgetStatePropertyAll(10),
                         shadowColor: const WidgetStatePropertyAll(
                             Color.fromARGB(112, 255, 255, 255)),
-                        backgroundColor: WidgetStateProperty.all(mid()),
+                        backgroundColor: WidgetStateProperty.all(mid),
                         fixedSize: const WidgetStatePropertyAll(
                             Size(double.maxFinite, 45))),
                     child: spiner
                         ? CircularProgressIndicator(
-                            color: light(),
+                            color: light,
                           )
                         : Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
                                 FontAwesomeIcons.google,
-                                color: light2(),
+                                color: light2,
                               ),
                               Text(
                                 "  SignIn with Google",
                                 style: TextStyle(
-                                    color: light2(),
+                                    color: light2,
                                     fontSize: 20,
                                     fontWeight: FontWeight.w700),
                               ),
