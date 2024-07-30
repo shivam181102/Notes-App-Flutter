@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:notes/Database/SQFlite/noteslocaldatamanager.dart';
+import 'package:notes/Database/firebase%20store/firestore.dart';
 import 'package:notes/Pages/drawerComp.dart';
 import 'package:notes/Pages/notecards.dart';
 import 'package:notes/Pages/searchbar.dart';
@@ -17,12 +18,21 @@ class Homecomp extends StatefulWidget {
 class _HomecompState extends State<Homecomp> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   NotesLocalDataManager _notesLocalDataManager = NotesLocalDataManager();
-  bool viewStyle = true;
+  FirebaseNotesDatamanager _firebaseNotesDatamanager =
+      FirebaseNotesDatamanager();
+  static bool viewStyle = true;
   int selectedIndex = 1;
   void setIndex(int num) {
     setState(() {
       selectedIndex = num;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _firebaseNotesDatamanager.setCurrentUser();
+    super.initState();
   }
 
   void viewstyleChange() {
@@ -53,7 +63,7 @@ class _HomecompState extends State<Homecomp> {
             ),
           ),
           Expanded(
-              child: Notecards(
+              child: NotesCardsDisplayComp(
             viewStyle: viewStyle,
             dataFunction: _notesLocalDataManager.getPinData(),
           )),
@@ -66,7 +76,7 @@ class _HomecompState extends State<Homecomp> {
           ),
           Expanded(
               flex: 2,
-              child: Notecards(
+              child: NotesCardsDisplayComp(
                 viewStyle: viewStyle,
                 dataFunction: _notesLocalDataManager.getData(),
               ))

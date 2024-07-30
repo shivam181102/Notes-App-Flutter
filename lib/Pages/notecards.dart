@@ -11,33 +11,37 @@ import 'package:notes/Pages/NotesGridviewComponent.dart';
 import 'package:notes/global/common/colorpalet.dart';
 import 'package:notes/global/models/NotesModel.dart';
 
-class Notecards extends StatefulWidget {
+class NotesCardsDisplayComp extends StatefulWidget {
   bool viewStyle;
   Future<List<NotesModel>> dataFunction;
-  Notecards({super.key, required this.viewStyle, required this.dataFunction});
+  NotesCardsDisplayComp(
+      {super.key, required this.viewStyle, required this.dataFunction});
 
   @override
-  State<Notecards> createState() => _NotecardsState();
+  State<NotesCardsDisplayComp> createState() => _NotesCardsDisplayCompState();
 }
 
-class _NotecardsState extends State<Notecards> {
+class _NotesCardsDisplayCompState extends State<NotesCardsDisplayComp> {
   NotesLocalDataManager _notesLocalDataManager = NotesLocalDataManager();
-  FirebaseNotesDatamanager _firebaseNotesDatamanager =
-      FirebaseNotesDatamanager();
 
   @override
   void initState() {
+    setinternet();
     super.initState();
-    _notesLocalDataManager.initConnectivity();
   }
 
-  User? user = FirebaseAuth.instance.currentUser;
+  void setinternet() async {
+    await _notesLocalDataManager.initConnectivity();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: widget.dataFunction,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
+          print(snapshot.error);
           return Center(
             child: Text(
               "Something went wrong",

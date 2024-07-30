@@ -73,7 +73,6 @@ class _EditnoteState extends State<Editnote> {
       await _notesLocalDataManager.addNote(profile);
     } else {
       await _notesLocalDataManager.updateNote(profile);
-      log('.........................................................');
     }
 
     Navigator.pushNamedAndRemoveUntil(

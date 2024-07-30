@@ -1,6 +1,6 @@
 // ignore_for_file: file_names, unused_import, must_be_immutable
 
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -90,6 +90,7 @@ class _DrawercompState extends State<Drawercomp> {
       await _googleSignIn.disconnect();
       await _googleSignIn.signOut();
     } on Exception catch (e) {
+      log("''''''''''''''''''''''''''''''''''''''''''''''''''''''");
       print(e.toString());
     }
   }

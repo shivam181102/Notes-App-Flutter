@@ -2,9 +2,12 @@
 
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:notes/Database/firebase%20store/firestore.dart';
+import 'package:notes/global/common/colorpalet.dart';
 import 'package:notes/global/models/NotesModel.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -30,18 +33,105 @@ class NotesLocalDataManager {
   final String _NotesUserArchiveColumnName = "isArchive";
   final String _NotesUserIDColumnName = "userId";
   final String _NotesEditedAtColumnName = "editedAt";
-
+  FirebaseNotesDatamanager _firebaseNotesDatamanager =
+      FirebaseNotesDatamanager();
   Future<void> initConnectivity() async {
-    Connectivity().onConnectivityChanged.listen((result) {
+    Connectivity().onConnectivityChanged.listen((result) async {
       if (result[0] == ConnectivityResult.mobile ||
           result[0] == ConnectivityResult.wifi) {
         log("Network Connected now");
+        if (InternetConnectivityStatus == false) {
+          await synchDBwithFireBase();
+        }
         InternetConnectivityStatus = true;
       } else {
         InternetConnectivityStatus = false;
         log("Network disconnected");
       }
     });
+  }
+
+  Future synchDBwithFireBase() async {
+    final db = await dataBase;
+    final newCreatedData = await db.query(_NoteTableName,
+        where: "$_NotesFirestoreIDColumnName IS NULL");
+    final notemodalList = await convertToNoteModel(newCreatedData);
+    for (var i = 0; i < notemodalList.length; i++) {
+      NotesModel element = notemodalList[i];
+      String? fid = await _firebaseNotesDatamanager.insertNote(element);
+      await db.update(_NoteTableName,
+          {_NotesFirestoreIDColumnName: fid, _NotesSyncedColumnName: 1},
+          where: 'id = ?', whereArgs: [element.id]);
+    }
+
+    final updateedNotes =
+        await db.query(_NoteTableName, where: "$_NotesSyncedColumnName = 0");
+    final notemodalList2 = convertToNoteModel(updateedNotes);
+    for (var element in notemodalList2) {
+      final fid = await db
+          .query(_NoteTableName, where: 'id = ?', whereArgs: [element.id]);
+      _firebaseNotesDatamanager.updateNote(
+          element, fid[0][_NotesFirestoreIDColumnName] as String);
+    }
+    await updateLocalDBFromFirebase();
+  }
+
+  Future<void> updateLocalDBFromFirebase() async {
+    final db = await dataBase;
+
+    QuerySnapshot<Map<String, dynamic>> snapshot =
+        await _firebaseNotesDatamanager.getAllNotes();
+
+    for (var doc in snapshot.docs) {
+      var firebaseNote = doc.data();
+      var firestoreId = doc.id;
+
+      final localNote = await db.query(
+        _NoteTableName,
+        where: "$_NotesFirestoreIDColumnName = ?",
+        whereArgs: [firestoreId],
+      );
+
+      try {
+        if (localNote.isNotEmpty) {
+          await db.update(
+            _NoteTableName,
+            {
+              _NotesUserIDColumnName: firebaseNote['userId'],
+              _NotesTitleColumnName: firebaseNote['title'],
+              _NotesBodyColumnName: firebaseNote['body'],
+              _NotesColorColumnName: firebaseNote['noteColor'] ?? dark.value,
+              _NotesFirestoreIDColumnName: firestoreId,
+              _NotesSyncedColumnName: 1,
+              _NotesDeletColumnName: firebaseNote['deleted'] ? 1 : 0,
+              _NotesUserPinColumnName: firebaseNote['isPin'] ? 1 : 0,
+              _NotesUserArchiveColumnName: firebaseNote['isArchive'] ? 1 : 0,
+              _NotesEditedAtColumnName: firebaseNote['editedAt'],
+            },
+            where: '$_NotesIDColumnName = ?',
+            whereArgs: [localNote[0][_NotesIDColumnName]],
+          );
+        } else {
+          await db.insert(
+            _NoteTableName,
+            {
+              _NotesUserIDColumnName: firebaseNote['userId'],
+              _NotesTitleColumnName: firebaseNote['title'],
+              _NotesBodyColumnName: firebaseNote['body'],
+              _NotesColorColumnName: firebaseNote['noteColor'] ?? dark.value,
+              _NotesFirestoreIDColumnName: firestoreId,
+              _NotesSyncedColumnName: 1,
+              _NotesDeletColumnName: firebaseNote['deleted'] ? 1 : 0,
+              _NotesUserPinColumnName: firebaseNote['isPin'] ? 1 : 0,
+              _NotesUserArchiveColumnName: firebaseNote['isArchive'] ? 1 : 0,
+              _NotesEditedAtColumnName: firebaseNote['editedAt'],
+            },
+          );
+        }
+      } catch (e) {
+        log('Error updating local database: $e');
+      }
+    }
   }
 
   Future<Database> get dataBase async {
@@ -83,20 +173,10 @@ class NotesLocalDataManager {
     final db = await dataBase;
     final data = await db.query(_NoteTableName,
         where:
-            '$_NotesDeletColumnName = ? AND $_NotesUserArchiveColumnName = ? AND $_NotesUserPinColumnName = ?',
-        whereArgs: [0, 0, 0]);
-    List<NotesModel> mapdata = data
-        .map((e) => NotesModel(
-            id: e[_NotesIDColumnName] as int,
-            title: e[_NotesTitleColumnName] as String,
-            body: e[_NotesBodyColumnName] as String,
-            pin: e[_NotesUserPinColumnName] == 1,
-            archive: e[_NotesUserArchiveColumnName] == 1,
-            color: Color(e[_NotesColorColumnName] as int),
-            editedAt: DateTime.fromMillisecondsSinceEpoch(
-                e[_NotesEditedAtColumnName] as int)))
-        .toList();
-
+            '$_NotesDeletColumnName = ? AND $_NotesUserArchiveColumnName = ? AND $_NotesUserPinColumnName = ? AND $_NotesUserIDColumnName = ?',
+        whereArgs: [0, 0, 0, _firebaseNotesDatamanager.currentUser?.uid]);
+    List<NotesModel> mapdata = convertToNoteModel(data);
+    // print(data);
     return mapdata;
   }
 
@@ -104,19 +184,9 @@ class NotesLocalDataManager {
     final db = await dataBase;
     final data = await db.query(_NoteTableName,
         where:
-            '$_NotesDeletColumnName = ? AND $_NotesUserArchiveColumnName = ? AND $_NotesUserPinColumnName = ?',
-        whereArgs: [0, 0, 1]);
-    List<NotesModel> mapdata = data
-        .map((e) => NotesModel(
-            id: e[_NotesIDColumnName] as int,
-            title: e[_NotesTitleColumnName] as String,
-            body: e[_NotesBodyColumnName] as String,
-            pin: e[_NotesUserPinColumnName] == 1,
-            archive: e[_NotesUserArchiveColumnName] == 1,
-            color: Color(e[_NotesColorColumnName] as int),
-            editedAt: DateTime.fromMillisecondsSinceEpoch(
-                e[_NotesEditedAtColumnName] as int)))
-        .toList();
+            '$_NotesDeletColumnName = ? AND $_NotesUserArchiveColumnName = ? AND $_NotesUserPinColumnName = ? AND $_NotesUserIDColumnName = ?',
+        whereArgs: [0, 0, 1, _firebaseNotesDatamanager.currentUser?.uid]);
+    List<NotesModel> mapdata = convertToNoteModel(data);
 
     return mapdata;
   }
@@ -130,16 +200,22 @@ class NotesLocalDataManager {
         _NotesEditedAtColumnName: DateTime.now().millisecondsSinceEpoch,
         _NotesUserPinColumnName: note.pin ? 1 : 0,
         _NotesUserArchiveColumnName: note.archive ? 1 : 0,
-        _NotesColorColumnName: note.color.value,
-        _NotesUserIDColumnName: FirebaseAuth.instance.currentUser?.uid
+        _NotesColorColumnName: note.color.value ?? dark.value,
+        _NotesUserIDColumnName: _firebaseNotesDatamanager.currentUser?.uid,
       });
+
+      if (InternetConnectivityStatus == true) {
+        String? fid = await _firebaseNotesDatamanager.insertNote(note);
+        await db.update(_NoteTableName,
+            {_NotesFirestoreIDColumnName: fid, _NotesSyncedColumnName: 1},
+            where: 'id = ?', whereArgs: [id]);
+      }
     }
   }
 
   Future<void> updateNote(NotesModel note) async {
     final db = await dataBase;
     try {
-      // log(note.archive.toString());
       await db.update(
           _NoteTableName,
           {
@@ -153,6 +229,14 @@ class NotesLocalDataManager {
           },
           where: 'id = ?',
           whereArgs: [note.id]);
+      if (InternetConnectivityStatus == true) {
+        final fid = await db
+            .query(_NoteTableName, where: 'id = ?', whereArgs: [note.id]);
+        _firebaseNotesDatamanager.updateNote(
+            note, fid[0][_NotesFirestoreIDColumnName] as String);
+        await db.update(_NoteTableName, {_NotesSyncedColumnName: 1},
+            where: 'id = ?', whereArgs: [note.id]);
+      }
     } catch (e) {}
   }
 
@@ -162,6 +246,29 @@ class NotesLocalDataManager {
       await db.update(
           _NoteTableName, {_NotesDeletColumnName: 1, _NotesSyncedColumnName: 0},
           where: 'id = ?', whereArgs: [id]);
+      if (InternetConnectivityStatus == true) {
+        final fid =
+            await db.query(_NoteTableName, where: 'id = ?', whereArgs: [id]);
+        _firebaseNotesDatamanager
+            .deleteNote(fid[0][_NotesFirestoreIDColumnName] as String);
+        await db.update(_NoteTableName, {_NotesSyncedColumnName: 1},
+            where: 'id = ?', whereArgs: [id]);
+      }
     } catch (e) {}
+  }
+
+  List<NotesModel> convertToNoteModel(List<Map<String, Object?>> data) {
+    log("${data.length}");
+    return data
+        .map((e) => NotesModel(
+            id: e[_NotesIDColumnName] as int,
+            title: e[_NotesTitleColumnName] as String,
+            body: e[_NotesBodyColumnName] as String,
+            pin: e[_NotesUserPinColumnName] == 1,
+            archive: e[_NotesUserArchiveColumnName] == 1,
+            color: Color(e[_NotesColorColumnName] as int),
+            editedAt: DateTime.fromMillisecondsSinceEpoch(
+                e[_NotesEditedAtColumnName] as int)))
+        .toList();
   }
 }
