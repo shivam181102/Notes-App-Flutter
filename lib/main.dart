@@ -1,14 +1,17 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:notes/Pages/ArchiveComponent.dart';
 import 'package:notes/Pages/OtpVerify.dart';
 import 'package:notes/Pages/Register.dart';
 import 'package:notes/Pages/editnote.dart';
 import 'package:notes/Pages/homeComp.dart';
 import 'package:notes/Pages/login.dart';
+import 'package:notes/Providers/NoteProvider.dart';
 import 'package:notes/features/app/splash_screen/splash_screen.dart';
 import 'package:notes/firebase_options.dart';
 import 'package:notes/global/common/colorpalet.dart';
+import 'package:provider/provider.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,21 +40,25 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-          textSelectionTheme: TextSelectionThemeData(
-              selectionColor: mid2, selectionHandleColor: mid2)),
-      home: SplashScreen(
-        child: current != null ? const Homecomp() : Login(),
+    return ChangeNotifierProvider(
+      create: (context) => Noteprovider(),
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+            textSelectionTheme: TextSelectionThemeData(
+                selectionColor: mid2, selectionHandleColor: mid2)),
+        home: SplashScreen(
+          child: current != null ? const Homecomp() : Login(),
+        ),
+        routes: {
+          'otpverify': (context) => Otpverify(),
+          'login': (context) => Login(),
+          'register': (context) => Register(),
+          'home': (context) => const Homecomp(),
+          'editnote': (context) => const Editnote(),
+          'archive': (context) => Archivecomponent(),
+        },
       ),
-      routes: {
-        'otpverify': (context) => Otpverify(),
-        'login': (context) => Login(),
-        'register': (context) => Register(),
-        'home': (context) => const Homecomp(),
-        'editnote': (context) => const Editnote(),
-      },
     );
   }
 }

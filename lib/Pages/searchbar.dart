@@ -5,8 +5,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:notes/Database/FirebaseStorage/ProfileImageStorage.dart';
+import 'package:notes/Providers/NoteProvider.dart';
 import 'package:notes/global/common/ImageImport.dart';
 import 'package:notes/global/common/colorpalet.dart';
+import 'package:notes/global/common/drawerButton.dart';
+import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class SearchBarComp extends StatefulWidget {
@@ -14,12 +17,7 @@ class SearchBarComp extends StatefulWidget {
   final viewStyleChange;
 
   SearchBarComp(
-      {super.key,
-      required GlobalKey<ScaffoldState> scaffoldKey,
-      required this.viewStyle,
-      required this.viewStyleChange})
-      : _scaffoldKey = scaffoldKey;
-  final GlobalKey<ScaffoldState> _scaffoldKey;
+      {super.key, required this.viewStyle, required this.viewStyleChange});
 
   @override
   State<SearchBarComp> createState() => _SearchBarCompState();
@@ -28,7 +26,7 @@ class SearchBarComp extends StatefulWidget {
 class _SearchBarCompState extends State<SearchBarComp> {
   Uint8List? _profileImage;
   Profileimagestorage _profileimagestorage = Profileimagestorage();
-  String ProfURL = "";
+  static String ProfURL = "";
   @override
   void initState() {
     // TODO: implement initState
@@ -40,7 +38,7 @@ class _SearchBarCompState extends State<SearchBarComp> {
 
   void getProfileURL() async {
     ProfURL = await _profileimagestorage.getUrl();
-    log(ProfURL);
+
     setState(() {});
   }
 
@@ -65,22 +63,10 @@ class _SearchBarCompState extends State<SearchBarComp> {
                   fillColor: mid,
                   contentPadding: const EdgeInsets.all(0),
                   hintText: "Search Your Notes",
-                  hintStyle: TextStyle(color: light),
-                  prefixIcon: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: GestureDetector(
-                      onTap: () {
-                        widget._scaffoldKey.currentState?.openDrawer();
-                      },
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: Icon(
-                          Icons.menu,
-                          color: light,
-                        ),
-                      ),
-                    ),
+                  hintStyle: const TextStyle(color: light),
+                  prefixIcon: const Padding(
+                    padding: EdgeInsets.all(15.0),
+                    child: DrawerbuttonComp(),
                   ),
                   suffixIcon: SizedBox(
                     width: 100,
@@ -144,13 +130,13 @@ class _SearchBarCompState extends State<SearchBarComp> {
       builder: (_) => AlertDialog(
         icon: IconButton(
           onPressed: () => Navigator.pop(context),
-          icon: Icon(
+          icon: const Icon(
             Icons.close,
             color: light,
           ),
         ),
         backgroundColor: mid,
-        title: Text(
+        title: const Text(
           "Profile",
           style: TextStyle(color: light),
         ),
@@ -188,11 +174,11 @@ class _SearchBarCompState extends State<SearchBarComp> {
                         )))
               ],
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(FirebaseAuth.instance.currentUser!.email.toString(),
-                style: TextStyle(color: light)),
+                style: const TextStyle(color: light)),
           ],
         ),
       ),

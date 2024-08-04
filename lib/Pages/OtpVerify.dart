@@ -5,9 +5,7 @@ class Otpverify extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _login() {
-      print("User Registered");
-    }
+    void _login() {}
 
     const borders = OutlineInputBorder(
         borderSide: BorderSide(width: 10, color: Colors.white),

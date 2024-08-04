@@ -17,7 +17,6 @@ class FirebaseAuthGoogle {
             accessToken: googleSignInAuthentication.accessToken);
         UserCredential userCredential =
             await FirebaseAuth.instance.signInWithCredential(credential);
-        print(userCredential.user);
         Navigator.pushNamedAndRemoveUntil(
             context, 'home', (Route<dynamic> route) => false);
       }

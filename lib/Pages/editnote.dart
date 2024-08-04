@@ -42,19 +42,21 @@ class _EditnoteState extends State<Editnote> {
     _noteControl = TextEditingController();
   }
 
+  late String routeName;
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     final args = ModalRoute.of(context)?.settings.arguments;
     if (args != null && args is Map<dynamic, dynamic>) {
       final props = args as Map;
+      routeName = props['routename'];
       profile = props['note'];
       _titleControl.text = profile.title ?? '';
       _noteControl.text = profile.body ?? '';
       backg = profile.color;
     } else {
       profile = new NotesModel(
-          title: _titleControl.text, body: _noteControl.text, color: dark);
+          title: _titleControl.text, body: _noteControl.text, color: backg);
     }
   }
 
@@ -69,6 +71,7 @@ class _EditnoteState extends State<Editnote> {
   void _handleBackButtonPress() async {
     profile.title = _titleControl.text;
     profile.body = _noteControl.text;
+    // profile.color = backg;
     if (profile.id == null) {
       await _notesLocalDataManager.addNote(profile);
     } else {
@@ -76,7 +79,7 @@ class _EditnoteState extends State<Editnote> {
     }
 
     Navigator.pushNamedAndRemoveUntil(
-        context, "home", (Route<dynamic> route) => false);
+        context, routeName, (Route<dynamic> route) => false);
   }
 
   @override

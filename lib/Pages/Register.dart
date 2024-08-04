@@ -161,7 +161,6 @@ class _RegisterState extends State<Register> {
                           suffixIcon: GestureDetector(
                             onTap: () {
                               visible = !visible;
-                              print(visible);
                             },
                             child: Icon(visible
                                 ? Icons.visibility_off

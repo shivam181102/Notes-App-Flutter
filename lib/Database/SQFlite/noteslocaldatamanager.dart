@@ -16,11 +16,12 @@ class NotesLocalDataManager {
   static final NotesLocalDataManager instance =
       NotesLocalDataManager._constructor();
   NotesLocalDataManager._constructor();
+
   factory NotesLocalDataManager() {
     return instance;
   }
   static Database? _db;
-  bool? InternetConnectivityStatus;
+  bool? InternetConnectivityStatus = false;
   final String _NoteTableName = "Notes";
   final String _NotesIDColumnName = "id";
   final String _NotesTitleColumnName = "title";
@@ -33,6 +34,7 @@ class NotesLocalDataManager {
   final String _NotesUserArchiveColumnName = "isArchive";
   final String _NotesUserIDColumnName = "userId";
   final String _NotesEditedAtColumnName = "editedAt";
+  int count = 0;
   FirebaseNotesDatamanager _firebaseNotesDatamanager =
       FirebaseNotesDatamanager();
   Future<void> initConnectivity() async {
@@ -40,8 +42,9 @@ class NotesLocalDataManager {
       if (result[0] == ConnectivityResult.mobile ||
           result[0] == ConnectivityResult.wifi) {
         log("Network Connected now");
+
         if (InternetConnectivityStatus == false) {
-          await synchDBwithFireBase();
+          synchDBwithFireBase();
         }
         InternetConnectivityStatus = true;
       } else {
@@ -73,7 +76,7 @@ class NotesLocalDataManager {
       _firebaseNotesDatamanager.updateNote(
           element, fid[0][_NotesFirestoreIDColumnName] as String);
     }
-    await updateLocalDBFromFirebase();
+    updateLocalDBFromFirebase();
   }
 
   Future<void> updateLocalDBFromFirebase() async {
@@ -81,7 +84,6 @@ class NotesLocalDataManager {
 
     QuerySnapshot<Map<String, dynamic>> snapshot =
         await _firebaseNotesDatamanager.getAllNotes();
-
     for (var doc in snapshot.docs) {
       var firebaseNote = doc.data();
       var firestoreId = doc.id;
@@ -91,7 +93,6 @@ class NotesLocalDataManager {
         where: "$_NotesFirestoreIDColumnName = ?",
         whereArgs: [firestoreId],
       );
-
       try {
         if (localNote.isNotEmpty) {
           await db.update(
@@ -176,7 +177,6 @@ class NotesLocalDataManager {
             '$_NotesDeletColumnName = ? AND $_NotesUserArchiveColumnName = ? AND $_NotesUserPinColumnName = ? AND $_NotesUserIDColumnName = ?',
         whereArgs: [0, 0, 0, _firebaseNotesDatamanager.currentUser?.uid]);
     List<NotesModel> mapdata = convertToNoteModel(data);
-    // print(data);
     return mapdata;
   }
 
@@ -191,6 +191,17 @@ class NotesLocalDataManager {
     return mapdata;
   }
 
+  Future<List<NotesModel>> getArchiveData() async {
+    final db = await dataBase;
+    final data = await db.query(_NoteTableName,
+        where:
+            '$_NotesDeletColumnName = ? AND $_NotesUserArchiveColumnName = ? AND $_NotesUserIDColumnName = ?',
+        whereArgs: [0, 1, _firebaseNotesDatamanager.currentUser?.uid]);
+    List<NotesModel> mapdata = convertToNoteModel(data);
+
+    return mapdata;
+  }
+
   Future<void> addNote(NotesModel note) async {
     final db = await dataBase;
     if (note.title != '' || note.body != "") {
@@ -200,10 +211,11 @@ class NotesLocalDataManager {
         _NotesEditedAtColumnName: DateTime.now().millisecondsSinceEpoch,
         _NotesUserPinColumnName: note.pin ? 1 : 0,
         _NotesUserArchiveColumnName: note.archive ? 1 : 0,
-        _NotesColorColumnName: note.color.value ?? dark.value,
+        _NotesColorColumnName: note.color.value,
         _NotesUserIDColumnName: _firebaseNotesDatamanager.currentUser?.uid,
       });
-
+      final data =
+          await db.query(_NoteTableName, where: 'id = ?', whereArgs: [id]);
       if (InternetConnectivityStatus == true) {
         String? fid = await _firebaseNotesDatamanager.insertNote(note);
         await db.update(_NoteTableName,
@@ -258,7 +270,6 @@ class NotesLocalDataManager {
   }
 
   List<NotesModel> convertToNoteModel(List<Map<String, Object?>> data) {
-    log("${data.length}");
     return data
         .map((e) => NotesModel(
             id: e[_NotesIDColumnName] as int,

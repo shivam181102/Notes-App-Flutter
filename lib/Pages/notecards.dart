@@ -13,25 +13,34 @@ import 'package:notes/global/models/NotesModel.dart';
 
 class NotesCardsDisplayComp extends StatefulWidget {
   bool viewStyle;
+  String routeName;
   Future<List<NotesModel>> dataFunction;
   NotesCardsDisplayComp(
-      {super.key, required this.viewStyle, required this.dataFunction});
+      {super.key,
+      required this.viewStyle,
+      required this.dataFunction,
+      required this.routeName});
 
   @override
   State<NotesCardsDisplayComp> createState() => _NotesCardsDisplayCompState();
 }
 
 class _NotesCardsDisplayCompState extends State<NotesCardsDisplayComp> {
-  NotesLocalDataManager _notesLocalDataManager = NotesLocalDataManager();
+  final NotesLocalDataManager _notesLocalDataManager = NotesLocalDataManager();
 
   @override
   void initState() {
     setinternet();
+
     super.initState();
   }
 
   void setinternet() async {
     await _notesLocalDataManager.initConnectivity();
+    // setfunction();
+  }
+
+  void setfunction() {
     setState(() {});
   }
 
@@ -69,7 +78,9 @@ class _NotesCardsDisplayCompState extends State<NotesCardsDisplayComp> {
           final data = snapshot.data!;
 
           return Notesgridviewcomponent(
-              viewStyle: widget.viewStyle, snapData: data);
+              routename: widget.routeName,
+              viewStyle: widget.viewStyle,
+              snapData: data);
         }
         return Text("KNHVJHVKJBKJBJKBJKBK");
       },

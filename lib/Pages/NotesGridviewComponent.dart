@@ -8,9 +8,13 @@ import 'package:notes/global/models/NotesModel.dart';
 
 class Notesgridviewcomponent extends StatefulWidget {
   bool viewStyle;
+  String routename;
   List<NotesModel> snapData;
   Notesgridviewcomponent(
-      {super.key, required this.viewStyle, required this.snapData});
+      {super.key,
+      required this.viewStyle,
+      required this.snapData,
+      required this.routename});
 
   @override
   State<Notesgridviewcomponent> createState() => _NotesgridviewcomponentState();
@@ -29,8 +33,10 @@ class _NotesgridviewcomponentState extends State<Notesgridviewcomponent> {
 
           return GestureDetector(
             onTap: () {
-              Navigator.pushNamed(context, 'editnote',
-                  arguments: {"note": widget.snapData[index] ?? null});
+              Navigator.pushNamed(context, 'editnote', arguments: {
+                "note": widget.snapData[index] ?? null,
+                "routename": widget.routename
+              });
             },
             child: Padding(
               padding: const EdgeInsets.all(4),

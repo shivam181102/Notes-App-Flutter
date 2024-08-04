@@ -22,7 +22,6 @@ class _DrawercompState extends State<Drawercomp> {
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   @override
   Widget build(BuildContext context) {
-    print(widget.selectedIndex);
     return Drawer(
       backgroundColor: mid,
       child: ListView(
@@ -90,7 +89,6 @@ class _DrawercompState extends State<Drawercomp> {
       await _googleSignIn.disconnect();
       await _googleSignIn.signOut();
     } on Exception catch (e) {
-      log("''''''''''''''''''''''''''''''''''''''''''''''''''''''");
       print(e.toString());
     }
   }

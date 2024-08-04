@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:notes/Database/SQFlite/noteslocaldatamanager.dart';
 import 'package:notes/global/common/colorpalet.dart';
 import 'package:notes/global/common/toast.dart';
 import 'package:notes/user_auth/firebase_auth_implementation/firebase_auth_google.dart';
@@ -36,7 +37,6 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     void _login() {
       final Map<String, dynamic> data = toJson();
-      print("User Login is $data");
     }
 
     const borders = OutlineInputBorder(
@@ -254,6 +254,7 @@ class _LoginState extends State<Login> {
     });
     if (user != null) {
       showToast(message: "Successful ");
+
       Navigator.pushNamedAndRemoveUntil(
           context, 'home', (Route<dynamic> route) => false);
     } else {
