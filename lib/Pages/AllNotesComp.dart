@@ -17,12 +17,7 @@ class Allnotescomp extends StatefulWidget {
 class _AllnotescompState extends State<Allnotescomp> {
   NotesLocalDataManager _notesLocalDataManager = NotesLocalDataManager();
 
-  static bool viewStyle = true;
-  void viewstyleChange() {
-    setState(() {
-      viewStyle = !viewStyle;
-    });
-  }
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +28,7 @@ class _AllnotescompState extends State<Allnotescomp> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SearchBarComp(
-            viewStyle: viewStyle,
-            viewStyleChange: viewstyleChange,
+            
           ),
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
@@ -46,7 +40,7 @@ class _AllnotescompState extends State<Allnotescomp> {
           Expanded(
               child: NotesCardsDisplayComp(
             routeName: "home",
-            viewStyle: viewStyle,
+           
             dataFunction: _notesLocalDataManager.getPinData(),
           )),
           Padding(
@@ -60,7 +54,7 @@ class _AllnotescompState extends State<Allnotescomp> {
               flex: 1,
               child: NotesCardsDisplayComp(
                 routeName: "home",
-                viewStyle: viewStyle,
+                
                 dataFunction: _notesLocalDataManager.getData(),
               ))
         ],

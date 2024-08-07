@@ -30,7 +30,7 @@ class _EditnoteState extends State<Editnote> {
   late NotesModel profile;
   late TextEditingController _titleControl;
   late TextEditingController _noteControl;
-  JsonData datainit = JsonData();
+  
   late Color backg = dark;
 
   late List<ColorClass> colorlist;
@@ -42,7 +42,7 @@ class _EditnoteState extends State<Editnote> {
     _noteControl = TextEditingController();
   }
 
-  late String routeName;
+   String routeName = "home";
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -97,7 +97,7 @@ class _EditnoteState extends State<Editnote> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (bool didPop, Object? result) {
+      onPopInvoked: (bool didPop) {
         if (didPop) {
           return;
         }

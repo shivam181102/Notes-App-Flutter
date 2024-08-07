@@ -13,11 +13,10 @@ import 'package:provider/provider.dart';
 
 // ignore: must_be_immutable
 class SearchBarComp extends StatefulWidget {
-  bool viewStyle;
-  final viewStyleChange;
+  
 
   SearchBarComp(
-      {super.key, required this.viewStyle, required this.viewStyleChange});
+      {super.key});
 
   @override
   State<SearchBarComp> createState() => _SearchBarCompState();
@@ -44,6 +43,7 @@ class _SearchBarCompState extends State<SearchBarComp> {
 
   @override
   Widget build(BuildContext context) {
+    final _noteProvider = Provider.of<Noteprovider>(context, listen: true);
     return Padding(
       padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
       child: Column(
@@ -78,10 +78,10 @@ class _SearchBarCompState extends State<SearchBarComp> {
                             padding: const EdgeInsets.all(0),
                             child: IconButton(
                               onPressed: () {
-                                widget.viewStyleChange();
+                                _noteProvider.toggleGridViewFormat();
                               },
                               icon: Icon(
-                                widget.viewStyle
+                                _noteProvider.gridViewFormat
                                     ? Icons.grid_view
                                     : Icons.table_rows,
                                 size: 25,

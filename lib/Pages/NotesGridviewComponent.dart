@@ -3,16 +3,17 @@ import 'dart:developer';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:notes/Providers/NoteProvider.dart';
 import 'package:notes/global/common/colorpalet.dart';
 import 'package:notes/global/models/NotesModel.dart';
+import 'package:provider/provider.dart';
 
 class Notesgridviewcomponent extends StatefulWidget {
-  bool viewStyle;
+  
   String routename;
   List<NotesModel> snapData;
   Notesgridviewcomponent(
       {super.key,
-      required this.viewStyle,
       required this.snapData,
       required this.routename});
 
@@ -23,11 +24,12 @@ class Notesgridviewcomponent extends StatefulWidget {
 class _NotesgridviewcomponentState extends State<Notesgridviewcomponent> {
   @override
   Widget build(BuildContext context) {
+    final _noteProvider = Provider.of<Noteprovider>(context, listen: true);
     return MasonryGridView.builder(
         padding: const EdgeInsets.all(10),
         itemCount: widget.snapData.length,
         gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: widget.viewStyle ? 2 : 1),
+            crossAxisCount: _noteProvider.gridViewFormat ? 2 : 1),
         itemBuilder: (context, index) {
           // final profile = _data![index];
 

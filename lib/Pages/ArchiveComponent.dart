@@ -30,6 +30,7 @@ class _ArchivecomponentState extends State<Archivecomponent> {
 
   @override
   Widget build(BuildContext context) {
+    final _noteProvider = Provider.of<Noteprovider>(context, listen: true);
     return Scaffold(
       endDrawerEnableOpenDragGesture: true,
       backgroundColor: dark,
@@ -43,9 +44,15 @@ class _ArchivecomponentState extends State<Archivecomponent> {
         actions: [
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Icon(
-              Icons.grid_view_outlined,
-              color: light,
+            child: IconButton(
+              onPressed: (){
+                _noteProvider.toggleGridViewFormat();
+              },
+              icon: Icon(
+                _noteProvider.gridViewFormat ? Icons.grid_view : Icons.table_rows,
+                size: 25,
+                color: light,
+              ),
             ),
           )
         ],
@@ -54,8 +61,7 @@ class _ArchivecomponentState extends State<Archivecomponent> {
         children: [
           Expanded(
               child: NotesCardsDisplayComp(
-            routeName: "archive",
-            viewStyle: true,
+            routeName: "home",
             dataFunction: _notesLocalDataManager.getArchiveData(),
           )),
         ],

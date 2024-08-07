@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
           'login': (context) => Login(),
           'register': (context) => Register(),
           'home': (context) => const Homecomp(),
-          'editnote': (context) => const Editnote(),
+          'editnote': (context) =>  Editnote(),
           'archive': (context) => Archivecomponent(),
         },
       ),

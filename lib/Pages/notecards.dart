@@ -8,16 +8,18 @@ import 'package:flutter/material.dart';
 import 'package:notes/Database/SQFlite/noteslocaldatamanager.dart';
 import 'package:notes/Database/firebase%20store/firestore.dart';
 import 'package:notes/Pages/NotesGridviewComponent.dart';
+import 'package:notes/Providers/NoteProvider.dart';
 import 'package:notes/global/common/colorpalet.dart';
 import 'package:notes/global/models/NotesModel.dart';
+import 'package:provider/provider.dart';
 
 class NotesCardsDisplayComp extends StatefulWidget {
-  bool viewStyle;
+  
   String routeName;
   Future<List<NotesModel>> dataFunction;
   NotesCardsDisplayComp(
       {super.key,
-      required this.viewStyle,
+      
       required this.dataFunction,
       required this.routeName});
 
@@ -46,6 +48,7 @@ class _NotesCardsDisplayCompState extends State<NotesCardsDisplayComp> {
 
   @override
   Widget build(BuildContext context) {
+   
     return FutureBuilder(
       future: widget.dataFunction,
       builder: (context, snapshot) {
@@ -79,7 +82,7 @@ class _NotesCardsDisplayCompState extends State<NotesCardsDisplayComp> {
 
           return Notesgridviewcomponent(
               routename: widget.routeName,
-              viewStyle: widget.viewStyle,
+              
               snapData: data);
         }
         return Text("KNHVJHVKJBKJBJKBJKBK");

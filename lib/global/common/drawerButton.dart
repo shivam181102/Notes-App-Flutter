@@ -13,20 +13,20 @@ class DrawerbuttonComp extends StatefulWidget {
 }
 
 class _DrawerbuttonCompState extends State<DrawerbuttonComp> {
-  // late final _notedataProvider;
+
   @override
   void initState() {
-    // TODO: implement initState
-    // log("home: ${_notedataProvider.currentState}");
+
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final _noteProvider = Provider.of<Noteprovider>(context, listen: false);
+    final _noteProvider = Provider.of<Noteprovider>(context, listen: true);
     final _notedataProvider = _noteProvider.scaffoldKey;
     return GestureDetector(
       onTap: () {
+        
         _notedataProvider.currentState?.openDrawer();
       },
       child: SizedBox(

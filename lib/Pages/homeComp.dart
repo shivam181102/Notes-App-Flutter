@@ -21,16 +21,16 @@ class Homecomp extends StatefulWidget {
 }
 
 class _HomecompState extends State<Homecomp> {
-  Widget? _selectedScreen;
+  static Widget? _selectedScreen  ;
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   FirebaseNotesDatamanager _firebaseNotesDatamanager =
       FirebaseNotesDatamanager();
 
-  int selectedIndex = 1;
+  static int selectedIndex = 1;
   void setIndex(int num) {
     switch (num) {
       case 3:
-        _selectedScreen = const Archivecomponent();
+        _selectedScreen =  Archivecomponent();
         break;
       default:
         _selectedScreen = Allnotescomp();
@@ -46,7 +46,8 @@ class _HomecompState extends State<Homecomp> {
     final noteProvider = Provider.of<Noteprovider>(context, listen: false);
     super.initState();
     noteProvider.setscaffoldKey(_scaffoldKey);
-    _selectedScreen = Allnotescomp();
+    setIndex(selectedIndex);
+    
   }
 
   @override
