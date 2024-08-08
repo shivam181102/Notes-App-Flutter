@@ -20,6 +20,7 @@ class FirebaseNotesDatamanager {
   final String _NotesUserArchiveName = "isArchive";
   final String _NotesUserIDName = "userId";
   final String _NotesEditedAtName = "editedAt";
+  final String _NotesDeletTimeName = "deletedtime";
   FirebaseNotesDatamanager._constructor() {
     setCurrentUser();
   }
@@ -29,7 +30,7 @@ class FirebaseNotesDatamanager {
   Future<void> setCurrentUser() async {
     currentUser = await FirebaseAuth.instance.currentUser;
   }
-
+  
   Future<QuerySnapshot<Map<String, dynamic>>> getAllNotes() async {
     return FirebaseFirestore.instance
         .collection(_NoteCollectionName)
@@ -37,13 +38,23 @@ class FirebaseNotesDatamanager {
         .get();
   }
 
-  Future deleteNote(String? id) async {
+  Future deleteNote(String? id, int? timestamp) async {
     try {
       if (id != null) {
         await FirebaseFirestore.instance
             .collection(_NoteCollectionName)
             .doc(id)
-            .update({_NotesDeletName: true});
+            .update({_NotesDeletName: true, _NotesDeletTimeName : timestamp});
+      }
+    } catch (e) {}
+  }
+  Future parmanentdeleteNote(String? id) async {
+    try {
+      if (id != null) {
+        await FirebaseFirestore.instance
+            .collection(_NoteCollectionName)
+            .doc(id)
+            .delete();
       }
     } catch (e) {}
   }
@@ -61,7 +72,8 @@ class FirebaseNotesDatamanager {
         _NotesUserPinName: note.pin,
         _NotesUserArchiveName: note.archive,
         _NotesUserIDName: currentUser?.uid,
-        _NotesDeletName: false,
+        _NotesDeletName: note.deleted,
+        _NotesDeletTimeName: note.deletedtime
       });
     } catch (e) {
       print(e);

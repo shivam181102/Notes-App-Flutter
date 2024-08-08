@@ -97,7 +97,7 @@ class _EditnoteState extends State<Editnote> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (bool didPop) {
+      onPopInvokedWithResult: (bool didPop, dynamic value) {
         if (didPop) {
           return;
         }

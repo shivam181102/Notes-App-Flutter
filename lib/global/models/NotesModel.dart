@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class NotesModel {
-  int? id;
+  int? id , deletedtime;
   String title;
   String body;
   Color color;
   DateTime? editedAt;
-  bool pin, archive;
+  bool pin, archive, deleted;
 
   NotesModel(
       {this.id,
@@ -15,5 +15,7 @@ class NotesModel {
       required this.color,
       this.editedAt,
       this.archive = false,
-      this.pin = false});
+      this.pin = false,
+      this.deleted = false,
+      this.deletedtime});
 }

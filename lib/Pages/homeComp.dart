@@ -7,6 +7,7 @@ import 'package:notes/Database/SQFlite/noteslocaldatamanager.dart';
 import 'package:notes/Database/firebase%20store/firestore.dart';
 import 'package:notes/Pages/AllNotesComp.dart';
 import 'package:notes/Pages/ArchiveComponent.dart';
+import 'package:notes/Pages/DeleteComponent.dart';
 import 'package:notes/Pages/drawerComp.dart';
 import 'package:notes/Providers/NoteProvider.dart';
 
@@ -25,12 +26,16 @@ class _HomecompState extends State<Homecomp> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   FirebaseNotesDatamanager _firebaseNotesDatamanager =
       FirebaseNotesDatamanager();
+      NotesLocalDataManager _notesLocalDataManager = NotesLocalDataManager();
 
   static int selectedIndex = 1;
   void setIndex(int num) {
     switch (num) {
       case 3:
         _selectedScreen =  Archivecomponent();
+        break;
+      case 5:
+        _selectedScreen =  Deletecomponent();
         break;
       default:
         _selectedScreen = Allnotescomp();
@@ -43,6 +48,7 @@ class _HomecompState extends State<Homecomp> {
   @override
   void initState() {
     _firebaseNotesDatamanager.setCurrentUser();
+    _notesLocalDataManager.deleteAfterSevenDays();
     final noteProvider = Provider.of<Noteprovider>(context, listen: false);
     super.initState();
     noteProvider.setscaffoldKey(_scaffoldKey);

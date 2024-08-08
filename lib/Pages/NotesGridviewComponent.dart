@@ -1,76 +1,120 @@
 import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:notes/Providers/NoteProvider.dart';
+import 'package:notes/Providers/SelectionProvider.dart';
 import 'package:notes/global/common/colorpalet.dart';
+import 'package:notes/global/common/toast.dart';
 import 'package:notes/global/models/NotesModel.dart';
 import 'package:provider/provider.dart';
 
 class Notesgridviewcomponent extends StatefulWidget {
-  
-  String routename;
-  List<NotesModel> snapData;
-  Notesgridviewcomponent(
-      {super.key,
-      required this.snapData,
-      required this.routename});
+  final String routename;
+  final List<NotesModel> snapData;
+
+  Notesgridviewcomponent({
+    super.key,
+    required this.snapData,
+    required this.routename,
+  });
 
   @override
   State<Notesgridviewcomponent> createState() => _NotesgridviewcomponentState();
 }
 
 class _NotesgridviewcomponentState extends State<Notesgridviewcomponent> {
+  
+
   @override
   Widget build(BuildContext context) {
     final _noteProvider = Provider.of<Noteprovider>(context, listen: true);
+    final _SelectionProvider = Provider.of<Selectionprovider>(context, listen: true);
+    
     return MasonryGridView.builder(
-        padding: const EdgeInsets.all(10),
-        itemCount: widget.snapData.length,
-        gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: _noteProvider.gridViewFormat ? 2 : 1),
-        itemBuilder: (context, index) {
-          // final profile = _data![index];
-
-          return GestureDetector(
-            onTap: () {
+      padding: const EdgeInsets.all(10),
+      itemCount: widget.snapData.length,
+      gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: _noteProvider.gridViewFormat ? 2 : 1,
+      ),
+      itemBuilder: (context, index) {
+        final note = widget.snapData[index];
+        return GestureDetector(
+          onTap: () {
+            if (_SelectionProvider.selectedNotes.isNotEmpty) {
+              log(";;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;");
+                if (_SelectionProvider.selectedNotes.contains(note)) {
+                  _SelectionProvider.removeSelected(note);
+                } else {
+                  _SelectionProvider.addSelected(note);
+                }
+             
+            } else if(note.deleted == false){
               Navigator.pushNamed(context, 'editnote', arguments: {
-                "note": widget.snapData[index] ?? null,
+                "note": note,
                 "routename": widget.routename
               });
-            },
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: widget.snapData[index].color,
-                  border: Border.all(color: mid2, width: 1),
-                  borderRadius: BorderRadius.circular(10),
+            }else{
+              showToast(message: "Cannot Edit Deleted Note", color: Colors.red);
+            }
+          },
+          onLongPress: () {
+            
+              if (_SelectionProvider.selectedNotes.contains(note)) {
+                _SelectionProvider.removeSelected(note);
+              } else {
+                _SelectionProvider.addSelected(note);
+              }
+           
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(4),
+            child: Stack(
+              children: [
+                Container(
+                  width: double.maxFinite,
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: note.color,
+                    border: _SelectionProvider.selectedNotes.contains(note)
+                        ? Border.all(color: light, width: 1)
+                        : Border.all(color: mid2, width: 1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        note.title,
+                        style: TextStyle(color: light, fontWeight: FontWeight.w700, fontSize: 18),
+                      ),
+                      SizedBox(height: 8),
+                      Text(
+                        note.body,
+                        style: TextStyle(color: light),
+                      ),
+                    ],
+                  ),
                 ),
-                // height: (index + 1) * 40,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      widget.snapData[index].title,
-                      style: TextStyle(
-                          color: light,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 18),
+                if (_SelectionProvider.selectedNotes.contains(note))
+                  Positioned(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: light,
+                      ),
+                      margin: EdgeInsets.all(5),
+                      child: Icon(Icons.check, color: dark, weight: 100),
                     ),
-                    SizedBox(height: 8),
-                    Text(
-                      widget.snapData[index].body,
-                      style: TextStyle(color: light),
-                    ),
-                  ],
-                ),
-              ),
+                    top: -5,
+                    left: -5,
+                  ),
+              ],
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }

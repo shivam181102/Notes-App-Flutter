@@ -62,7 +62,7 @@ class _ArchivecomponentState extends State<Archivecomponent> {
           Expanded(
               child: NotesCardsDisplayComp(
             routeName: "home",
-            dataFunction: _notesLocalDataManager.getArchiveData(),
+            dataFunction: _notesLocalDataManager.getArchiveData() ,
           )),
         ],
       ),

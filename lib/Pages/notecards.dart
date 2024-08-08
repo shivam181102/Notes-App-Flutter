@@ -33,25 +33,30 @@ class _NotesCardsDisplayCompState extends State<NotesCardsDisplayComp> {
   @override
   void initState() {
     setinternet();
-
+    
     super.initState();
   }
-
+  Future<void> _fetchDataAfterLogin() async {
+    
+    
+     
+     Provider.of<Noteprovider>(context, listen: false).updateNotes();
+  }
   void setinternet() async {
     await _notesLocalDataManager.initConnectivity();
-    // setfunction();
+    
   }
 
-  void setfunction() {
-    setState(() {});
-  }
+  
 
   @override
   Widget build(BuildContext context) {
-   
+    
+
     return FutureBuilder(
       future: widget.dataFunction,
       builder: (context, snapshot) {
+        
         if (snapshot.hasError) {
           print(snapshot.error);
           return Center(

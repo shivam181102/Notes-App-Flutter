@@ -15,6 +15,9 @@ class Noteprovider with ChangeNotifier {
     
     notifyListeners();
   }
+  void updateNotes() {
+    notifyListeners();
+  }
 
   void setscaffoldKey(GlobalKey<ScaffoldState> value) {
     WidgetsBinding.instance.addPostFrameCallback((_) {

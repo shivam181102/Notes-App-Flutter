@@ -8,6 +8,7 @@ import 'package:notes/Pages/editnote.dart';
 import 'package:notes/Pages/homeComp.dart';
 import 'package:notes/Pages/login.dart';
 import 'package:notes/Providers/NoteProvider.dart';
+import 'package:notes/Providers/SelectionProvider.dart';
 import 'package:notes/features/app/splash_screen/splash_screen.dart';
 import 'package:notes/firebase_options.dart';
 import 'package:notes/global/common/colorpalet.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // This widget is the root of your application.
+
   User? current;
   @override
   void initState() {
@@ -40,8 +41,11 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => Noteprovider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => Noteprovider(),),
+        ChangeNotifierProvider(create: (context) => Selectionprovider(),)
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
