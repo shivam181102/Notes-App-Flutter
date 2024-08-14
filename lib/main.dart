@@ -47,14 +47,16 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (context) => Selectionprovider(),)
       ],
       child: MaterialApp(
+        initialRoute:'SplashScreen' ,
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
             textSelectionTheme: TextSelectionThemeData(
                 selectionColor: mid2, selectionHandleColor: mid2)),
-        home: SplashScreen(
+      
+        routes: {
+          'SplashScreen': (context)=>SplashScreen(
           child: current != null ? const Homecomp() : Login(),
         ),
-        routes: {
           'otpverify': (context) => Otpverify(),
           'login': (context) => Login(),
           'register': (context) => Register(),
