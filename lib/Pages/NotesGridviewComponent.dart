@@ -32,6 +32,8 @@ class _NotesgridviewcomponentState extends State<Notesgridviewcomponent> {
     final _SelectionProvider = Provider.of<Selectionprovider>(context, listen: true);
     
     return MasonryGridView.builder(
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(10),
       itemCount: widget.snapData.length,
       gridDelegate: SliverSimpleGridDelegateWithFixedCrossAxisCount(

@@ -17,19 +17,15 @@ class Allnotescomp extends StatefulWidget {
 class _AllnotescompState extends State<Allnotescomp> {
   NotesLocalDataManager _notesLocalDataManager = NotesLocalDataManager();
 
- 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       endDrawerEnableOpenDragGesture: true,
       backgroundColor: dark,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      body: ListView(
+        // crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SearchBarComp(
-            
-          ),
+          SearchBarComp(),
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: Text(
@@ -37,12 +33,10 @@ class _AllnotescompState extends State<Allnotescomp> {
               style: TextStyle(color: light),
             ),
           ),
-          Expanded(
-              child: NotesCardsDisplayComp(
+          NotesCardsDisplayComp(
             routeName: "home",
-           
             dataFunction: _notesLocalDataManager.getPinData(),
-          )),
+          ),
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: Text(
@@ -50,13 +44,10 @@ class _AllnotescompState extends State<Allnotescomp> {
               style: TextStyle(color: light),
             ),
           ),
-          Expanded(
-              flex: 1,
-              child: NotesCardsDisplayComp(
-                routeName: "home",
-                
-                dataFunction: _notesLocalDataManager.getData(),
-              ))
+          NotesCardsDisplayComp(
+            routeName: "home",
+            dataFunction: _notesLocalDataManager.getData(),
+          )
         ],
       ),
       bottomNavigationBar: BottomAppBar(

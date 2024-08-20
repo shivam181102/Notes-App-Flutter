@@ -62,7 +62,7 @@ class NotesLocalDataManager implements Databseinterface {
   Future<void> deleteAfterSevenDays() async {
     final db = await dataBase;
     final now = DateTime.now();
-    final sevendays = now.subtract(Duration(days: 7)).millisecondsSinceEpoch;
+    final sevendays = now.subtract(Duration(days: 1)).millisecondsSinceEpoch;
     await db.delete(_NoteTableName, where: "$_NotesDeletTimeColumnName < ?" , whereArgs: [sevendays]);
     
   }

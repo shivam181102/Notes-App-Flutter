@@ -45,11 +45,11 @@ class _SearchBarCompState extends State<SearchBarComp> {
   Widget build(BuildContext context) {
     final _noteProvider = Provider.of<Noteprovider>(context, listen: true);
     return Padding(
-      padding: const EdgeInsets.only(top: 10, left: 10, right: 10),
+      padding: const EdgeInsets.only(top: 1, left: 10, right: 10),
       child: Column(
         children: [
           Container(
-            margin: const EdgeInsets.only(top: 30),
+            margin: const EdgeInsets.only(top: 10),
             decoration: BoxDecoration(boxShadow: [
               BoxShadow(
                   color: Colors.black.withOpacity(0.3),

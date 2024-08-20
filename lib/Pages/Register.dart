@@ -42,10 +42,10 @@ class _RegisterState extends State<Register> {
 
     final shadowStore = BoxDecoration(boxShadow: [
       BoxShadow(
-        color: Color.fromARGB(255, 255, 255, 255).withOpacity(0.1),
+        color: const Color.fromARGB(255, 255, 255, 255).withOpacity(0.1),
         spreadRadius: 5,
         blurRadius: 9,
-        offset: Offset(0, 0), // changes position of shadow
+        offset: const Offset(0, 0), // changes position of shadow
       ),
     ]);
     return Scaffold(
@@ -70,13 +70,13 @@ class _RegisterState extends State<Register> {
             // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.only(left: 10.0),
                     child: Text(
                       "Email Address",
@@ -91,8 +91,8 @@ class _RegisterState extends State<Register> {
                     child: TextField(
                       controller: emailController,
                       cursorColor: mid2,
-                      style: TextStyle(color: light),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: light),
+                      decoration: const InputDecoration(
                           fillColor: mid,
                           filled: true,
                           hintText: "Enter email",
@@ -105,7 +105,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.only(left: 10.0),
                     child: Text(
                       "Name",
@@ -120,8 +120,8 @@ class _RegisterState extends State<Register> {
                     child: TextField(
                       controller: nameController,
                       cursorColor: mid2,
-                      style: TextStyle(color: light),
-                      decoration: InputDecoration(
+                      style: const TextStyle(color: light),
+                      decoration: const InputDecoration(
                           fillColor: mid,
                           filled: true,
                           hintText: "Enter Name",
@@ -134,7 +134,7 @@ class _RegisterState extends State<Register> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Padding(
+                  const Padding(
                     padding: EdgeInsets.only(left: 10.0),
                     child: Text(
                       "Password",
@@ -150,12 +150,12 @@ class _RegisterState extends State<Register> {
                       obscureText: visible,
                       controller: passwordController,
                       cursorColor: mid2,
-                      style: TextStyle(color: light),
+                      style: const TextStyle(color: light),
                       decoration: InputDecoration(
                           fillColor: mid,
                           filled: true,
                           hintText: "Enter Password",
-                          hintStyle: TextStyle(color: light),
+                          hintStyle: const TextStyle(color: light),
                           enabledBorder: borders,
                           focusedBorder: borders,
                           suffixIcon: GestureDetector(
@@ -171,7 +171,7 @@ class _RegisterState extends State<Register> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 60,
               ),
               Column(
@@ -187,7 +187,7 @@ class _RegisterState extends State<Register> {
                             Color.fromARGB(112, 255, 255, 255)),
                         fixedSize: const WidgetStatePropertyAll(
                             Size(double.maxFinite, 45))),
-                    child: Text(
+                    child: const Text(
                       "Register",
                       style: TextStyle(
                           color: light,
@@ -216,10 +216,10 @@ class _RegisterState extends State<Register> {
                         fixedSize: const WidgetStatePropertyAll(
                             Size(double.maxFinite, 45))),
                     child: spiner
-                        ? CircularProgressIndicator(
+                        ? const CircularProgressIndicator(
                             color: light,
                           )
-                        : Row(
+                        : const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Icon(
@@ -236,7 +236,7 @@ class _RegisterState extends State<Register> {
                             ],
                           ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                   Row(
