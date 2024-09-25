@@ -23,7 +23,7 @@ class NotesLocalDataManager implements Databseinterface {
     return instance;
   }
   static Database? _db;
-  bool? InternetConnectivityStatus = false;
+  bool InternetConnectivityStatus = false;
   final String _NoteTableName = "Notes";
   final String _NotesIDColumnName = "id";
   final String _NotesTitleColumnName = "title";
@@ -83,7 +83,7 @@ class NotesLocalDataManager implements Databseinterface {
     // Permanent Deleted
     final parmanentDeleteData = await db.query(_NoteTableName, columns: [_NotesIDColumnName, _NotesFirestoreIDColumnName],
         where: "$_NotesDeletPermanentColumnName = ? AND $_NotesSyncedColumnName = ?", whereArgs: [1,0]);
-        print(parmanentDeleteData);
+      
     for (var i = 0; i < parmanentDeleteData.length; i++) {
       Map element = parmanentDeleteData[i];
       await _firebaseNotesDatamanager.parmanentdeleteNote(element['firestoreID'] as String);
@@ -202,11 +202,15 @@ class NotesLocalDataManager implements Databseinterface {
 
   Future<List<NotesModel>> getData() async {
     final db = await dataBase;
+    final temp = await db.query(_NoteTableName);
     final data = await db.query(_NoteTableName,
         where:
             '$_NotesDeletColumnName = ? AND $_NotesUserArchiveColumnName = ? AND $_NotesUserPinColumnName = ? AND $_NotesUserIDColumnName = ?',
         whereArgs: [0, 0, 0, _firebaseNotesDatamanager.currentUser?.uid]);
         log("Data Received ..............................");
+        print(data);
+        log("..............................");
+        print(temp);
     List<NotesModel> mapdata = convertToNoteModel(data);
     return mapdata;
   }
@@ -236,8 +240,8 @@ class NotesLocalDataManager implements Databseinterface {
     final db = await dataBase;
     final data = await db.query(_NoteTableName,
         where:
-            '$_NotesDeletColumnName = ?  AND $_NotesUserIDColumnName = ?',
-        whereArgs: [1,  _firebaseNotesDatamanager.currentUser?.uid]);
+            '$_NotesDeletColumnName = ?  AND $_NotesUserIDColumnName = ? AND $_NotesDeletPermanentColumnName = ?',
+        whereArgs: [1,  _firebaseNotesDatamanager.currentUser?.uid, 0]);
         
     List<NotesModel> mapdata = convertToNoteModel(data);
 
@@ -284,10 +288,16 @@ class NotesLocalDataManager implements Databseinterface {
           where: 'id = ?',
           whereArgs: [note.id]);
       if (InternetConnectivityStatus == true) {
+
+
         final fid = await db
             .query(_NoteTableName, where: 'id = ?', whereArgs: [note.id]);
+
+
         _firebaseNotesDatamanager.updateNote(
             note, fid[0][_NotesFirestoreIDColumnName] as String);
+
+            
         await db.update(_NoteTableName, {_NotesSyncedColumnName: 1},
             where: 'id = ?', whereArgs: [note.id]);
       }
@@ -326,7 +336,9 @@ class NotesLocalDataManager implements Databseinterface {
         await db.delete(_NoteTableName,
             where: 'id = ?', whereArgs: [element.id]);
       }}
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   List<NotesModel> convertToNoteModel(List<Map<String, Object?>> data) {
@@ -345,3 +357,9 @@ class NotesLocalDataManager implements Databseinterface {
         .toList();
   }
 }
+/**                     
+//  *                                            
+ * 
+ *                                  
+ *        
+ */

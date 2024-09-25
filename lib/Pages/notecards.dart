@@ -71,18 +71,8 @@ class _NotesCardsDisplayCompState extends State<NotesCardsDisplayComp> {
               color: light,
             ),
           );
-        }
-        if (snapshot.data?.length == 0) {
-          return Center(
-            child: Text(
-              "No Data Found",
-              style: TextStyle(color: light),
-            ),
-          );
-        }
-        if (snapshot.hasData &&
-            snapshot.data != null &&
-            !snapshot.data!.isEmpty) {
+        }else if (snapshot.hasData &&
+            snapshot.data != null ) {
           final data = snapshot.data!;
 
           return Notesgridviewcomponent(
@@ -90,6 +80,15 @@ class _NotesCardsDisplayCompState extends State<NotesCardsDisplayComp> {
               
               snapData: data);
         }
+         else if (snapshot.data?.length == 0) {
+          return Center(
+            child: Text(
+              "No Data Found",
+              style: TextStyle(color: light),
+            ),
+          );
+        }
+        
         return Text("KNHVJHVKJBKJBJKBJKBK");
       },
     );

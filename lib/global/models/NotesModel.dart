@@ -18,4 +18,4 @@ class NotesModel {
       this.pin = false,
       this.deleted = false,
       this.deletedtime});
-}
+      }

@@ -35,7 +35,7 @@ class _SearchBarCompState extends State<SearchBarComp> {
     super.initState();
   }
 
-  void getProfileURL() async {
+  Future getProfileURL() async {
     ProfURL = await _profileimagestorage.getUrl();
 
     setState(() {});
@@ -186,11 +186,14 @@ class _SearchBarCompState extends State<SearchBarComp> {
   }
 
   void selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery) ?? _profileImage;
+    Uint8List img = await pickImage(ImageSource.camera) ?? _profileImage;
     setState(() {
       _profileImage = img;
     });
     await _profileimagestorage.saveProfile(file: _profileImage!);
-    getProfileURL();
+    await getProfileURL();
+    setState(() {
+      
+    });
   }
 }
